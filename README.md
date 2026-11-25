@@ -48,7 +48,9 @@ News aus `news.json` erscheinen automatisch auch bei bestehenden Nutzern. Sie la
 
 ## Lokal starten
 
-Die Seite lädt JSON per `fetch` und braucht deshalb einen Webserver, z. B. `npx serve .`. Per `file://` funktioniert sie nicht.
+Die Seite lädt JSON per `fetch` und braucht deshalb einen Webserver, z. B. `npx serve .`. Per `file://` werden keine Inhalte geladen.
+
+Fällt eine `data/*.json` aus oder ist ungültig, nutzt die App die zuletzt geladene Version aus einem eigenen Cache (`wow_forever_content_cache_v1`) und zeigt einen Hinweis. Fehlen Start-Aufgaben und es gibt weder Cache noch gespeicherten Stand, startet sie bewusst nicht.
 
 ## Veröffentlichen (GitHub Pages)
 

@@ -35,7 +35,7 @@ The application uses vanilla HTML, CSS and JavaScript without a build step.
 
 JavaScript files use classic script tags and share one global scope (top-level `const`, `let` and functions are visible across files). The loading order is defined in `index.html` and must be respected: files only call functions from later files at runtime, but top-level code must only use things from earlier files.
 
-Because content is loaded with `fetch`, the app must be served over HTTP. Opening `index.html` via `file://` does not work and shows an error message.
+Because content is loaded with `fetch`, the app must be served over HTTP. Opening `index.html` via `file://` does not load content (see fallback rules in section 9).
 
 ### Repository Structure
 
@@ -318,8 +318,9 @@ Target integration: automatic GitHub commits to the content files.
 
 ### Known limitations
 
-- If one of the three JSON files cannot be loaded, startup stops with an error message. The app does **not** yet fall back to local or embedded data. Adding this fallback is a planned improvement.
-- `tasks.json` and `daily.json` are not schema-validated on load. Only news entries are sanitized.
+- Fallback: each JSON file is loaded and validated individually (`CONTENT_FILES` in `js/content.js`). If a file is unreachable or invalid, the last successfully loaded version from the content cache (localStorage key `wow_forever_content_cache_v1`, separate from personal data) is used and a toast informs the user. Without a cache that content stays empty.
+- Hard stop: if `tasks.json` is unavailable and there is neither a cache nor a saved personal state, the app shows an error and does not start. This prevents creating and saving an empty personal state.
+- Validation is light: tasks go through `validTask()`, news through `validNews()`, daily entries must be `[id, title, note]` strings. Invalid daily rows are dropped, a wholly invalid file counts as failed.
 - There is no suggestion mechanism for tasks yet. A separate file (e.g. `data/suggestions.json`) with safe merging and user approval is planned in Phase 2.
 
 ### Research Scope
@@ -475,7 +476,7 @@ Avoid introducing a backend before there is a concrete requirement.
 ### Phase 2 – Automated Content (in progress)
 - Separate JSON content layer (done: news, tasks seed, daily)
 - Automatic frontend content loading (done)
-- Fallback when content cannot be loaded
+- Fallback when content cannot be loaded (done: per-file validation plus content cache)
 - Safe task suggestions and merging
 - GitHub Watcher integration
 - End-to-end automation testing
