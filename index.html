@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="dark" />
+<title>Hunter Command Center · WoW Forever</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+ <div class="logo"><div class="mini">World of Warcraft · Forever</div><h1>Hunter<br>Command Center</h1><p>Level 60 · Horde · Dein roter Faden.</p></div>
+ <nav id="nav" class="nav" aria-label="Navigation"></nav>
+ <div class="side-note"><b>Lokale App · Version 3.0</b>Änderungen werden nur in diesem Browser gespeichert. Regelmäßig JSON-Backup exportieren, besonders vor einem Dateiaustausch.</div>
+</aside>
+<main class="main">
+ <div class="top"><div><div class="eyebrow" id="subtitle">Dein Abenteuer · Dein Plan</div><h2 id="title">Raidbereit. Was macht heute Spaß?</h2><p class="sub" id="intro">Weniger hin und her. Klarer Fokus – ohne deinen Completionist-Anspruch zu verlieren.</p></div><div class="btns"><button type="button" class="btn" id="backupBtn">↓ Backup</button><button type="button" class="btn" id="restoreBtn">↑ Import</button><button type="button" class="btn primary" id="addBtn">+ Neue Aufgabe</button></div></div>
+ <div class="stats" id="stats"></div>
+ <div id="mainContent"></div>
+ <p class="footer">Datenstand: 25.11.2026 · V3 separater Browser-Speicher · Persönlicher Tracker, keine Live-Verbindung zu WoW. Drops, Preise, Rufwerte und zukünftige Features müssen separat bestätigt werden. Englische Spielbegriffe sind absichtlich beibehalten.</p>
+</main>
+</div>
+<input type="file" id="importFile" accept=".json,application/json" hidden />
+<dialog id="editDialog">
+ <h3 id="editHeading">Aufgabe bearbeiten</h3>
+ <form id="editForm"><input type="hidden" id="editId" />
+  <div class="field"><label class="fieldlabel" for="fTitle">Aufgabentitel</label><input id="fTitle" class="in" maxlength="160" required /></div>
+  <div class="formrow"><div class="field"><label class="fieldlabel" for="fCategory">Bereich</label><select id="fCategory" class="sel"></select></div><div class="field"><label class="fieldlabel" for="fStatus">Status</label><select id="fStatus" class="sel"></select></div></div>
+  <div class="formrow"><div class="field"><label class="fieldlabel" for="fPriority">Priorität</label><select id="fPriority" class="sel"></select></div><div class="field"><label class="fieldlabel" for="fMode">Aktivität</label><select id="fMode" class="sel"></select></div></div>
+  <div class="formrow"><div class="field"><label class="fieldlabel" for="fPhase">Zeithorizont</label><select id="fPhase" class="sel"><option value="now">Jetzt machbar</option><option value="long">Langfristig</option><option value="future">Zukünftiger Content</option></select></div><div class="field"><label class="fieldlabel" for="fLocation">Fundort / Ort</label><input id="fLocation" class="in" maxlength="220" /></div></div>
+  <div class="field"><label class="fieldlabel" for="fNotes">Notizen / nächster Schritt</label><textarea id="fNotes" class="area" maxlength="2400"></textarea></div>
+  <div class="field"><label class="fieldlabel" for="fSource">Quelle (optional, HTTPS)</label><input id="fSource" class="in" maxlength="650" placeholder="https://..." /></div>
+  <div class="modalfooter"><button id="deleteBtn" type="button" class="btn red">Löschen</button><div class="right"><button type="button" id="cancelEdit" class="btn">Abbrechen</button><button type="submit" class="btn primary">Speichern</button></div></div>
+ </form>
+</dialog>
+<div id="toast" role="status" aria-live="polite" class="toast"></div>
+<script src="js/app.js"></script>
+</body>
+</html>

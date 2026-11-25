@@ -1,59 +1,34 @@
-# MeinPortfolio
+# Hunter Command Center
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.5.
+Persönliche Companion-Web-App für **WoW Forever**: Aufgaben, Gear, Gold, Reals, News und Fokus-Ziele an einem Ort.
 
-## Development server
+Live: https://phrathjen.github.io/hunter-command-center/ (nicht verlinkt, per `noindex` und `robots.txt` von Suchmaschinen ausgeschlossen)
 
-To start a local development server, run:
+## Struktur
 
-```bash
-ng serve
+```
+index.html      Markup und Einstiegspunkt
+css/styles.css  Dark-Mode-Design
+js/app.js       Logik, Seed-Daten, Rendering
+robots.txt      Crawler aussperren
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Reines HTML/CSS/JS, kein Build-Schritt.
 
-## Code scaffolding
+## Daten und Datenschutz
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- Persönlicher Fortschritt liegt nur im **localStorage des Browsers**, nie im Repository.
+- Backup/Import läuft über JSON-Export in der App.
+- Das Repository ist öffentlich. Die URL ist nicht geheim, nur unauffällig. Keine sensiblen Daten einchecken.
 
-```bash
-ng generate component component-name
-```
+## Lokal starten
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+`index.html` im Browser öffnen oder z. B. `npx serve .`
 
-```bash
-ng generate --help
-```
+## Veröffentlichen (GitHub Pages)
 
-## Building
+Settings → Pages → Source: *Deploy from a branch* → `main` / `(root)`.
 
-To build the project run:
+## Roadmap
 
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Content-Layer als JSON (`data/`) für automatische News- und Aufgaben-Updates, Charakterverwaltung, Raid Planner, optional Supabase-Sync.
