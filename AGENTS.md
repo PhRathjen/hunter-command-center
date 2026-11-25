@@ -44,6 +44,7 @@ Because content is loaded with `fetch`, the app must be served over HTTP. Openin
 - `data/tasks.json` – Initial tasks (seed) for new or reset personal states
 - `data/news.json` – Public news entries
 - `data/daily.json` – Daily rotation activities
+- `data/suggestions.json` – Task suggestions written by the watcher (may be empty)
 - `js/content.js` – Loads `data/*.json` at startup (`loadContent()`)
 - `js/config.js` – Constants, categories, navigation, labels
 - `js/utils.js` – Shared helper functions
@@ -292,6 +293,7 @@ Target integration: automatic GitHub commits to the content files.
 - **News:** `allNews()` in `js/state.js` merges `data/news.json` with news the user imported personally. The same `id` means the personal entry wins. Content news are never copied into the personal state, so repository updates reach existing users. Content news cannot be deleted in the app, only in the repository. Each entry is passed through `validNews()` before display.
 - **Tasks:** `data/tasks.json` is only the seed for new or reset personal states. Changing it does **not** affect already saved tasks. It is not a suggestion channel.
 - **Daily:** `data/daily.json` defines the daily rotation entries.
+- **Suggestions:** `data/suggestions.json` entries are shown on the News page under "Vorgeschlagene Aufgaben". The user can accept (opens the task editor prefilled; the suggestion is only marked handled when the task is saved) or reject. Handled suggestion ids are stored in the personal state as `handledSuggestions`, so accepted or rejected suggestions never come back, even if the resulting task is deleted later. A suggestion never creates a task by itself. Duplicate ids in the file are dropped (first wins).
 
 ### File formats
 
@@ -312,6 +314,28 @@ Target integration: automatic GitHub commits to the content files.
 - `source` must start with `https://`, otherwise it is dropped.
 - Unknown `kind` values are shown as `speculation`.
 
+`data/suggestions.json` – array of objects:
+
+```json
+{
+  "id": "unique-stable-id",
+  "date": "YYYY-MM-DD",
+  "title": "max 200 characters",
+  "category": "gear | tirion | raid | ... (see CAT in js/config.js), default custom",
+  "priority": 1,
+  "mode": "see MODES in js/config.js",
+  "phase": "now | long | future",
+  "location": "optional",
+  "notes": "optional, max 2400 characters",
+  "reason": "concrete gameplay benefit, max 400 characters",
+  "source": "https://... or empty string"
+}
+```
+
+- `id` must be unique and stable and is the only deduplication key. Never reuse the id of a rejected or accepted suggestion for a different idea.
+- `reason` is required by content policy: every suggestion needs a concrete gameplay benefit.
+- Unknown `category`, `mode` and `phase` values fall back to defaults. `status` and `order` are ignored.
+
 `data/daily.json` – array of `[id, title, note]` triples.
 
 `data/tasks.json` – array of task objects. Edit only after reading `validTask()` in `js/state.js`.
@@ -321,7 +345,7 @@ Target integration: automatic GitHub commits to the content files.
 - Fallback: each JSON file is loaded and validated individually (`CONTENT_FILES` in `js/content.js`). If a file is unreachable or invalid, the last successfully loaded version from the content cache (localStorage key `wow_forever_content_cache_v1`, separate from personal data) is used and a toast informs the user. Without a cache that content stays empty.
 - Hard stop: if `tasks.json` is unavailable and there is neither a cache nor a saved personal state, the app shows an error and does not start. This prevents creating and saving an empty personal state.
 - Validation is light: tasks go through `validTask()`, news through `validNews()`, daily entries must be `[id, title, note]` strings. Invalid daily rows are dropped, a wholly invalid file counts as failed.
-- There is no suggestion mechanism for tasks yet. A separate file (e.g. `data/suggestions.json`) with safe merging and user approval is planned in Phase 2.
+- The News page does not show a badge for open suggestions yet. They are only visible on that page.
 
 ### Research Scope
 
@@ -352,7 +376,7 @@ Target integration: automatic GitHub commits to the content files.
 
 ### Watcher Permissions
 
-Once explicitly authorized and tested, the automated watcher may modify **only `data/news.json`** (and later `data/suggestions.json` once it exists).
+Once explicitly authorized and tested, the automated watcher may modify **only `data/news.json` and `data/suggestions.json`**.
 
 The watcher must not automatically modify:
 
@@ -477,7 +501,7 @@ Avoid introducing a backend before there is a concrete requirement.
 - Separate JSON content layer (done: news, tasks seed, daily)
 - Automatic frontend content loading (done)
 - Fallback when content cannot be loaded (done: per-file validation plus content cache)
-- Safe task suggestions and merging
+- Safe task suggestions and merging (done: `data/suggestions.json`, accept/reject, `handledSuggestions`)
 - GitHub Watcher integration
 - End-to-end automation testing
 

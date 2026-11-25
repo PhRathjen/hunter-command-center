@@ -7,6 +7,7 @@ function openEditor(id = null, defaults = {}) {
   const t = getTask(id) || defaults;
   document.getElementById('editHeading').textContent = id ? 'Aufgabe bearbeiten' : 'Neue Aufgabe';
   document.getElementById('editId').value = id || '';
+  document.getElementById('editSuggestion').value = defaults.suggestionId || '';
   document.getElementById('fTitle').value = t.title || '';
   document.getElementById('fCategory').value = t.category || (CAT[page] ? page : 'custom');
   document.getElementById('fStatus').value = t.status || 'todo';
@@ -44,5 +45,21 @@ function newsTask(id) {
     location: 'Neuer Forever-Content',
     source: n.source,
     phase: 'long',
+  });
+}
+
+function suggestionTask(id) {
+  const s = pendingSuggestions().find((x) => x.id === id);
+  if (!s) return;
+  openEditor(null, {
+    suggestionId: s.id,
+    title: s.title,
+    category: s.category,
+    priority: s.priority,
+    mode: s.mode,
+    phase: s.phase,
+    location: s.location,
+    notes: s.notes + (s.reason ? '\nWarum: ' + s.reason : ''),
+    source: s.source,
   });
 }

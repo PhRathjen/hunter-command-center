@@ -10,6 +10,7 @@ function blank() {
     gold: 904,
     focus: ['raid-boots', 'gold-puffer', 'farm-dmtribute'],
     updates: [],
+    handledSuggestions: [],
     updatedAt: null,
     daily: { date: localDay(), checks: {}, mats: {}, runs: '1', craft: false },
     economy: {
@@ -72,6 +73,24 @@ function validNews(n) {
   };
 }
 
+// Aufgabenvorschlag aus dem Content-Layer: Task-Felder (ohne Status/Order) plus Datum und Begründung.
+function validSuggestion(s) {
+  const t = validTask(s, 0);
+  return {
+    id: t.id,
+    title: t.title,
+    category: t.category,
+    priority: t.priority,
+    mode: t.mode,
+    phase: t.phase,
+    location: t.location,
+    notes: t.notes,
+    source: t.source,
+    date: String(s.date || '').slice(0, 20),
+    reason: String(s.reason || '').slice(0, 400),
+  };
+}
+
 function validateState(raw) {
   return {
     tasks: validated(raw.tasks),
@@ -83,6 +102,11 @@ function validateState(raw) {
       ? raw.focus.filter((x) => typeof x === 'string').slice(0, 3)
       : [],
     updates: Array.isArray(raw.updates) ? raw.updates.slice(0, 500).map(validNews) : [],
+    handledSuggestions: Array.isArray(raw.handledSuggestions)
+      ? raw.handledSuggestions
+          .filter((x) => typeof x === 'string' && x.length <= 180)
+          .slice(0, 2000)
+      : [],
     updatedAt: raw.updatedAt || null,
     daily: {
       date: typeof raw.daily?.date === 'string' ? raw.daily.date : localDay(),
@@ -147,6 +171,12 @@ function save() {
 function allNews() {
   const own = new Set(data.updates.map((n) => n.id));
   return [...data.updates, ...BASE_NEWS.filter((n) => !own.has(n.id)).map(validNews)];
+}
+
+// Vorschläge, die weder übernommen noch abgelehnt wurden. Entscheidungen bleiben im persönlichen State.
+function pendingSuggestions() {
+  const done = new Set(data.handledSuggestions);
+  return BASE_SUGGESTIONS.filter((s) => !done.has(s.id));
 }
 
 function getTask(id) {

@@ -11,6 +11,7 @@ const CONTENT_CACHE_KEY = 'wow_forever_content_cache_v1';
 let SEED = [];
 let BASE_NEWS = [];
 let DAILY = [];
+let BASE_SUGGESTIONS = [];
 
 // Pro Datei: Pfad und eine Prüffunktion, die den Inhalt validiert und normalisiert (oder wirft).
 const CONTENT_FILES = {
@@ -23,6 +24,17 @@ const CONTENT_FILES = {
     check: (json) => {
       if (!Array.isArray(json)) throw Error('Kein Array.');
       return json.filter((n) => n && typeof n === 'object').map(validNews);
+    },
+  },
+  suggestions: {
+    path: 'data/suggestions.json',
+    check: (json) => {
+      if (!Array.isArray(json)) throw Error('Kein Array.');
+      const seen = new Set();
+      return json
+        .filter((s) => s && typeof s === 'object')
+        .map(validSuggestion)
+        .filter((s) => !seen.has(s.id) && seen.add(s.id)); // doppelte ids: erster Eintrag gewinnt
     },
   },
   daily: {
@@ -86,5 +98,6 @@ async function loadContent() {
   SEED = out.tasks;
   BASE_NEWS = out.news;
   DAILY = out.daily;
+  BASE_SUGGESTIONS = out.suggestions;
   return { failed };
 }

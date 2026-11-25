@@ -37,6 +37,18 @@ root.addEventListener('click', (e) => {
     render();
     return;
   }
+  if (b.dataset.sugAccept) {
+    suggestionTask(b.dataset.sugAccept);
+    return;
+  }
+  if (b.dataset.sugDismiss) {
+    if (confirm('Diesen Vorschlag ablehnen? Er erscheint nicht wieder.')) {
+      data.handledSuggestions.push(b.dataset.sugDismiss);
+      save();
+      render();
+    }
+    return;
+  }
   if (b.dataset.newsTask) {
     newsTask(b.dataset.newsTask);
     return;
@@ -157,6 +169,8 @@ document.getElementById('editForm').addEventListener('submit', (e) => {
     const original = getTask(id);
     if (original) Object.assign(original, t, { order: original.order });
   } else data.tasks.push(t);
+  const sug = document.getElementById('editSuggestion').value;
+  if (sug && !data.handledSuggestions.includes(sug)) data.handledSuggestions.push(sug);
   if (t.status === 'done') data.focus = data.focus.filter((x) => x !== t.id);
   save();
   dialog.close();
