@@ -7,13 +7,21 @@ Live: https://phrathjen.github.io/hunter-command-center/ (nicht verlinkt, per `n
 ## Struktur
 
 ```
-index.html      Markup und Einstiegspunkt
-css/styles.css  Dark-Mode-Design
-js/app.js       Logik, Seed-Daten, Rendering
-robots.txt      Crawler aussperren
+index.html        Markup und Einstiegspunkt (Script-Reihenfolge steht hier)
+css/styles.css    Dark-Mode-Design
+js/data/          Seed-Aufgaben und Basis-Content (späterer Content-Layer)
+js/config.js      Konstanten, Kategorien, Navigation
+js/utils.js       Allgemeine Helfer
+js/state.js       State, Validierung, localStorage
+js/views/         Eine Datei pro Seite plus Komponenten und Layout
+js/editor.js      Aufgaben-Dialog
+js/backup.js      Backup, Import, Patch
+js/events*.js     Event-Handler
+js/main.js        Start
+robots.txt        Crawler aussperren
 ```
 
-Reines HTML/CSS/JS, kein Build-Schritt.
+Reines HTML/CSS/JS, kein Build-Schritt. Die Scripts sind klassische Script-Tags und teilen sich einen globalen Scope.
 
 ## Daten und Datenschutz
 
