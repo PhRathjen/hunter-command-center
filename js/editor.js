@@ -33,7 +33,7 @@ function initForm() {
 }
 
 function newsTask(id) {
-  const n = data.updates.find((x) => x.id === id);
+  const n = allNews().find((x) => x.id === id);
   if (!n) return;
   openEditor(null, {
     title: n.title,

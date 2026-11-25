@@ -9,7 +9,7 @@ function blank() {
     realsCap: 165,
     gold: 904,
     focus: ['raid-boots', 'gold-puffer', 'farm-dmtribute'],
-    updates: clone(BASE_NEWS),
+    updates: [],
     updatedAt: null,
     daily: { date: localDay(), checks: {}, mats: {}, runs: '1', craft: false },
     economy: {
@@ -126,7 +126,7 @@ function load() {
   return blank();
 }
 
-let data = load(),
+let data, // wird in main.js nach dem Laden des Contents gesetzt
   page = 'overview',
   modeFilter = 'all',
   statusFilter = 'open',
@@ -141,6 +141,12 @@ function save() {
   } catch (e) {
     toast('Speichern fehlgeschlagen. Bitte Backup exportieren!');
   }
+}
+
+// Alle News: Content-Layer plus persönlich importierte Meldungen (gleiche id = persönliche gewinnt).
+function allNews() {
+  const own = new Set(data.updates.map((n) => n.id));
+  return [...data.updates, ...BASE_NEWS.filter((n) => !own.has(n.id)).map(validNews)];
 }
 
 function getTask(id) {

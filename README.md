@@ -9,7 +9,8 @@ Live: https://phrathjen.github.io/hunter-command-center/ (nicht verlinkt, per `n
 ```
 index.html        Markup und Einstiegspunkt (Script-Reihenfolge steht hier)
 css/styles.css    Dark-Mode-Design
-js/data/          Seed-Aufgaben und Basis-Content (späterer Content-Layer)
+data/             Content-Layer (JSON): tasks.json, news.json, daily.json
+js/content.js     Lädt data/*.json beim Start
 js/config.js      Konstanten, Kategorien, Navigation
 js/utils.js       Allgemeine Helfer
 js/state.js       State, Validierung, localStorage
@@ -29,9 +30,25 @@ Reines HTML/CSS/JS, kein Build-Schritt. Die Scripts sind klassische Script-Tags 
 - Backup/Import läuft über JSON-Export in der App.
 - Das Repository ist öffentlich. Die URL ist nicht geheim, nur unauffällig. Keine sensiblen Daten einchecken.
 
+## Content-Layer
+
+Drei Schichten, strikt getrennt:
+
+- **Application:** `index.html`, `css/`, `js/`.
+- **Content:** `data/*.json`, öffentlich, vom Watcher aktualisierbar. Wird bei jedem Start per `fetch` geladen.
+- **Personal Data:** localStorage im Browser. Content-Updates überschreiben sie nie.
+
+Formate:
+
+- `news.json`: Array von `{id, date, kind, title, summary, source}`. `kind` ist `official`, `datamined`, `podcast` oder `speculation`. `id` muss eindeutig sein, `source` eine `https://`-URL oder leer.
+- `daily.json`: Array von `[id, Titel, Hinweis]`.
+- `tasks.json`: Start-Aufgaben, werden nur für neue oder zurückgesetzte Stände verwendet. Bereits gespeicherte Aufgaben bleiben unverändert.
+
+News aus `news.json` erscheinen automatisch auch bei bestehenden Nutzern. Sie lassen sich nicht in der App löschen, sondern nur im Repo.
+
 ## Lokal starten
 
-`index.html` im Browser öffnen oder z. B. `npx serve .`
+Die Seite lädt JSON per `fetch` und braucht deshalb einen Webserver, z. B. `npx serve .`. Per `file://` funktioniert sie nicht.
 
 ## Veröffentlichen (GitHub Pages)
 
@@ -39,4 +56,4 @@ Settings → Pages → Source: *Deploy from a branch* → `main` / `(root)`.
 
 ## Roadmap
 
-Content-Layer als JSON (`data/`) für automatische News- und Aufgaben-Updates, Charakterverwaltung, Raid Planner, optional Supabase-Sync.
+Watcher-Anbindung (automatische Commits in `data/`), Vorschlagsliste für neue Aufgaben, Charakterverwaltung, Raid Planner, optional Supabase-Sync.
