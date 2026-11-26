@@ -47,6 +47,7 @@ Because content is loaded with `fetch`, the app must be served over HTTP. Openin
 - `data/news.json` – Public news entries
 - `data/daily.json` – Daily rotation activities
 - `data/suggestions.json` – Task suggestions written by the watcher (may be empty)
+- `data/raidstart.json` – Raid start date and raid names shown in the status card and on the Raids page (owner-controlled)
 - `js/content.js` – Loads `data/*.json` at startup (`loadContent()`)
 - `js/config.js` – Constants, categories, navigation, labels
 - `js/utils.js` – Shared helper functions
@@ -336,6 +337,15 @@ Current integration: the existing ChatGPT automation has been configured to publ
 - `reason` is required by content policy: every suggestion needs a concrete gameplay benefit.
 - Unknown `category`, `mode` and `phase` values fall back to defaults. `status` and `order` are ignored.
 
+`data/raidstart.json` – single object:
+
+```json
+{ "raidStart": "YYYY-MM-DD", "raids": ["Barrow Deeps", "Hyjal Summit"] }
+```
+
+- `raidStart` must be a real calendar date, otherwise the file counts as invalid and the card shows "Kein Termin hinterlegt". `raids` is optional (max 10 names, 40 characters each).
+- Update it only when Blizzard officially announces a change, and add a matching `official` entry to `data/news.json`.
+
 `data/daily.json` – array of `[id, title, note]` triples.
 
 `data/tasks.json` – array of task objects. Edit only after reading `validTask()` in `js/state.js`.
@@ -382,6 +392,7 @@ The watcher must not automatically modify:
 
 - `data/tasks.json` (seed data, owner-controlled)
 - `data/daily.json`
+- `data/raidstart.json` (changed by the owner or on explicit request, not by the automatic watcher)
 - Application source code (`index.html`, `css/`, `js/`)
 - Personal progression
 - Existing task completion

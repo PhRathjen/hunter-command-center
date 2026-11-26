@@ -64,6 +64,8 @@ function taskView() {
       '<div class="notice">Silithus und Winterspring fast fertig; Eastern Plaguelands zuletzt zwei Elite-Quests offen. Die abgeschlossene Tirion-Questreihe bleibt separat im Archiv erfasst.</div>';
   if (page === 'raid')
     extra =
-      '<div class="notice">Offiziell angekündigt für 09.12.2026: Barrow Deeps, Hyjal Summit und Onyxia’s Lair. Onyxia Attunement abgeschlossen; Consumables vollständig.</div>';
+      raidStartInfo() && RAIDSTART.raids.length
+        ? '<div class="notice">Offiziell angekündigt für ' + raidStartInfo().label + ': ' + esc(RAIDSTART.raids.join(', ')) + '.</div>'
+        : '';
   return `${extra}<div class="sectionhead"><h3>${esc(head)}</h3><small>${list.length} Aufgaben angezeigt</small></div>${sectionAll()}<div class="tasklist" id="taskList">${list.length ? list.map(taskCard).join('') : '<div class="empty">Keine passenden Aufgaben. Filter ändern oder eine neue Aufgabe anlegen.</div>'}</div>`;
 }

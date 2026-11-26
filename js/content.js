@@ -12,6 +12,7 @@ let SEED = [];
 let BASE_NEWS = [];
 let DAILY = [];
 let BASE_SUGGESTIONS = [];
+let RAIDSTART = null; // { raidStart: 'YYYY-MM-DD', raids: [Name, ...] } oder null
 
 // Pro Datei: Pfad und eine Prüffunktion, die den Inhalt validiert und normalisiert (oder wirft).
 const CONTENT_FILES = {
@@ -24,6 +25,20 @@ const CONTENT_FILES = {
     check: (json) => {
       if (!Array.isArray(json)) throw Error('Kein Array.');
       return json.filter((n) => n && typeof n === 'object').map(validNews);
+    },
+  },
+  raidstart: {
+    path: 'data/raidstart.json',
+    empty: null,
+    check: (json) => {
+      if (!json || typeof json !== 'object' || Array.isArray(json)) throw Error('Kein Objekt.');
+      const m = /^([0-9]{4})-([0-9]{2})-([0-9]{2})$/.exec(String(json.raidStart));
+      const date = m && new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+      if (!date || date.getMonth() !== Number(m[2]) - 1) throw Error('Ungültiges Datum.');
+      const raids = Array.isArray(json.raids)
+        ? json.raids.filter((r) => typeof r === 'string' && r.trim()).map((r) => r.slice(0, 40)).slice(0, 10)
+        : [];
+      return { raidStart: m[0], raids };
     },
   },
   suggestions: {
@@ -89,7 +104,7 @@ async function loadContent() {
         try {
           out[key] = def.check(cache[key] ?? []);
         } catch (e2) {
-          out[key] = [];
+          out[key] = def.empty !== undefined ? def.empty : [];
         }
       }
     }),
@@ -99,5 +114,6 @@ async function loadContent() {
   BASE_NEWS = out.news;
   DAILY = out.daily;
   BASE_SUGGESTIONS = out.suggestions;
+  RAIDSTART = out.raidstart;
   return { failed };
 }

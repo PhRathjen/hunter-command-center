@@ -244,6 +244,17 @@ function openTasks(cat) {
   return sortTasks(categoryTasks(cat).filter(active));
 }
 
+// Raidstart aus dem Content-Layer: Tage bis dahin und Datum als TT.MM.JJJJ (oder null ohne Termin).
+function raidStartInfo() {
+  if (!RAIDSTART) return null;
+  const [y, m, d] = RAIDSTART.raidStart.split('-').map(Number);
+  const days = Math.ceil(
+    (new Date(y, m - 1, d).getTime() - new Date(localDay() + 'T00:00:00').getTime()) / 86400000,
+  );
+  const pad = (n) => String(n).padStart(2, '0');
+  return { days, label: pad(d) + '.' + pad(m) + '.' + y };
+}
+
 function focusTasks() {
   const marked = data.focus.map(getTask).filter((t) => t && active(t));
   const pool = sortTasks(

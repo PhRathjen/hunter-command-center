@@ -42,6 +42,7 @@ Formate:
 
 - `news.json`: Array von `{id, date, kind, title, summary, source}`. `kind` ist `official`, `datamined`, `podcast` oder `speculation`. `id` muss eindeutig sein, `source` eine `https://`-URL oder leer.
 - `suggestions.json`: Aufgabenvorschläge vom Watcher. Array von `{id, date, title, category, priority, mode, phase, location, notes, reason, source}`. Sie erscheinen auf der News-Seite und werden nie automatisch zu Aufgaben. Übernehmen öffnet den Editor, Ablehnen ist endgültig. Entschiedene IDs stehen im persönlichen Stand (`handledSuggestions`), daher kommt kein Vorschlag zurück.
+- `raidstart.json`: `{"raidStart": "YYYY-MM-DD", "raids": [...]}`. Daraus entstehen der Countdown in der Statuskarte und der Hinweis auf der Raid-Seite. Ohne gültiges Datum zeigt die Karte "Kein Termin hinterlegt".
 - `daily.json`: Array von `[id, Titel, Hinweis]`.
 - `tasks.json`: Start-Aufgaben, werden nur für neue oder zurückgesetzte Stände verwendet. Bereits gespeicherte Aufgaben bleiben unverändert.
 

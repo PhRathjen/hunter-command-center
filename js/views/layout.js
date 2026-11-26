@@ -20,13 +20,11 @@ function renderNav() {
 }
 
 function renderStats() {
-  const d = localDay(),
-    days = Math.ceil(
-      (new Date(2026, 11, 9).getTime() - new Date(d + 'T00:00:00').getTime()) / 86400000,
-    );
+  const start = raidStartInfo();
   const raid = categoryProgress('raid');
+  const goldTarget = data.economy.mount + data.economy.reserve + data.economy.alt;
   document.getElementById('stats').innerHTML =
-    `<div class="stat"><small>Raidbereitschaft</small><div class="big">${raid.pct} <span>%</span></div><div class="note">${!raid.total ? 'Keine Raid-Aufgaben' : raid.open === 0 ? 'Alle Pflichtaufgaben erledigt' : raid.open + ' Pflichtaufgaben offen'}</div>${bar(raid.pct, raid.total > 0 && raid.pct === 100)}</div><div class="stat"><small>Gold ${data.economy.goldConfirmed ? '' : '· letzter Stand'}</small><div class="big">${data.gold == null ? '—' : data.gold.toLocaleString('de-DE')} <span>g</span></div><div class="note">Goldpuffer vor Epic Riding</div>${bar((100 * (data.gold || 0)) / Math.max(1, data.economy.mount + data.economy.reserve + data.economy.alt))}</div><div class="stat"><small>Undermine Reals ${data.economy.realsConfirmed ? '' : '· zuletzt gemeldet'}</small><div class="big">${data.reals} <span>/ ${data.realsCap}</span></div><div class="note">Reserve · Cap editierbar</div>${bar((100 * data.reals) / data.realsCap)}</div><div class="stat"><small>Raidstart · 09.12.2026</small><div class="big">${days > 0 ? days + ' <span>Tage</span>' : days === 0 ? 'Heute' : 'Live'}</div><div class="note">Barrow Deeps · Hyjal · Onyxia</div>${bar(days <= 0 ? 100 : Math.max(0, 100 - (days / 14) * 100))}</div>`;
+    `<div class="stat"><small>Raidbereitschaft</small><div class="big">${raid.pct} <span>%</span></div><div class="note">${!raid.total ? 'Keine Raid-Aufgaben' : raid.open === 0 ? 'Alle Pflichtaufgaben erledigt' : raid.open + ' Pflichtaufgaben offen'}</div>${bar(raid.pct, raid.total > 0 && raid.pct === 100)}</div><div class="stat"><small>Gold ${data.economy.goldConfirmed ? '' : '· letzter Stand'}</small><div class="big">${data.gold == null ? '—' : data.gold.toLocaleString('de-DE')} <span>g</span></div><div class="note">Ziel ${goldTarget.toLocaleString('de-DE')} g</div>${bar((100 * (data.gold || 0)) / Math.max(1, goldTarget))}</div><div class="stat"><small>Undermine Reals ${data.economy.realsConfirmed ? '' : '· zuletzt gemeldet'}</small><div class="big">${data.reals} <span>/ ${data.realsCap}</span></div><div class="note">Reserve · Cap editierbar</div>${bar((100 * data.reals) / data.realsCap)}</div><div class="stat"><small>Raidstart${start ? ' · ' + start.label : ''}</small><div class="big">${!start ? '—' : start.days > 0 ? start.days + ' <span>Tage</span>' : start.days === 0 ? 'Heute' : 'Live'}</div><div class="note">${start ? esc(RAIDSTART.raids.join(' · ')) || '&nbsp;' : 'Kein Termin hinterlegt'}</div>${bar(!start ? 0 : start.days <= 0 ? 100 : Math.max(0, 100 - (start.days / 14) * 100))}</div>`;
 }
 
 function setHeader() {
