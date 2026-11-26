@@ -24,6 +24,7 @@ const CAT = {
 const NAV = [
   ['overview', 'Übersicht', '◈'],
   ['daily', 'Daily-Rotation', '↻'],
+  ['watcher', 'Watcher & News', '⌁'],
   ['resources', 'Ressourcen', '◇'],
   ['legacy', 'T0 & Legacy', '✧'],
   ['alt', 'Paladin / Twink', '♞'],
@@ -37,7 +38,6 @@ const NAV = [
   ['professions', 'Berufe', '⚒'],
   ['gold', 'Gold & Mounts', '◈'],
   ['future', 'Langzeitziele', '◎'],
-  ['watcher', 'Watcher & News', '⌁'],
   ['archive', 'Erledigt', '✓'],
 ];
 

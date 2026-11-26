@@ -343,7 +343,7 @@ Current integration: the existing ChatGPT automation has been configured to publ
 - Fallback: each JSON file is loaded and validated individually (`CONTENT_FILES` in `js/content.js`). If a file is unreachable or invalid, the last successfully loaded version from the content cache (localStorage key `wow_forever_content_cache_v1`, separate from personal data) is used and a toast informs the user. Without a cache that content stays empty.
 - Hard stop: if `tasks.json` is unavailable and there is neither a cache nor a saved personal state, the app shows an error and does not start. This prevents creating and saving an empty personal state.
 - Validation is light: tasks go through `validTask()`, news through `validNews()`, daily entries must be `[id, title, note]` strings. Invalid daily rows are dropped, a wholly invalid file counts as failed.
-- The News page does not show a badge for open suggestions yet. They are only visible on that page.
+- The sidebar entry "Watcher & News" (directly below Daily-Rotation) shows a badge with unseen news plus open suggestions. News count as seen once the page is opened (ids in the personal state as `seenNews`); suggestions stay counted until accepted or rejected. The manual JSON import is kept as a collapsed fallback panel on that page.
 
 ### Research Scope
 

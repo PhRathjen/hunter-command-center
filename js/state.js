@@ -11,6 +11,7 @@ function blank() {
     focus: ['raid-boots', 'gold-puffer', 'farm-dmtribute'],
     updates: [],
     handledSuggestions: [],
+    seenNews: [],
     updatedAt: null,
     daily: { date: localDay(), checks: {}, mats: {}, runs: '1', craft: false },
     economy: {
@@ -107,6 +108,9 @@ function validateState(raw) {
           .filter((x) => typeof x === 'string' && x.length <= 180)
           .slice(0, 2000)
       : [],
+    seenNews: Array.isArray(raw.seenNews)
+      ? raw.seenNews.filter((x) => typeof x === 'string' && x.length <= 180).slice(0, 2000)
+      : [],
     updatedAt: raw.updatedAt || null,
     daily: {
       date: typeof raw.daily?.date === 'string' ? raw.daily.date : localDay(),
@@ -171,6 +175,21 @@ function save() {
 function allNews() {
   const own = new Set(data.updates.map((n) => n.id));
   return [...data.updates, ...BASE_NEWS.filter((n) => !own.has(n.id)).map(validNews)];
+}
+
+// Meldungen, die der Nutzer auf der Watcher-Seite noch nicht gesehen hat.
+function unseenNews() {
+  const seen = new Set(data.seenNews);
+  return allNews().filter((n) => !seen.has(n.id));
+}
+
+// Markiert beim Öffnen der Watcher-Seite alle aktuellen Meldungen als gesehen.
+function markNewsSeen() {
+  const ids = unseenNews().map((n) => n.id);
+  if (!ids.length) return;
+  data.seenNews.push(...ids);
+  save();
+  renderNav();
 }
 
 // Vorschläge, die weder übernommen noch abgelehnt wurden. Entscheidungen bleiben im persönlichen State.

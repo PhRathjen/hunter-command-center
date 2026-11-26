@@ -13,7 +13,8 @@ function renderNav() {
                 (t) => t.category === key && (key === 'future' ? t.status !== 'done' : active(t)),
               ).length
             : null;
-    return `<button data-nav="${key}" class="${page === key ? 'active' : ''}"><span class="ico">${ico}</span>${esc(label)}${n !== null ? `<span class="count">${n}</span>` : ''}</button>`;
+    const alert = key === 'watcher' ? unseenNews().length + pendingSuggestions().length : 0;
+    return `<button data-nav="${key}" class="${page === key ? 'active' : ''}"><span class="ico">${ico}</span>${esc(label)}${n !== null ? `<span class="count">${n}</span>` : ''}${alert ? `<span class="count alert" title="Neu oder offen">${alert}</span>` : ''}</button>`;
   }).join('');
 }
 
@@ -73,4 +74,5 @@ function render() {
           : page === 'watcher'
             ? watcher()
             : taskView();
+  if (page === 'watcher') markNewsSeen();
 }

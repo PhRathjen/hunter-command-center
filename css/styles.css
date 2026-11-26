@@ -12,3 +12,6 @@ dialog{width:min(650px,calc(100vw - 24px));max-height:88vh;overflow:auto;backgro
 @media(max-width:1170px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.cards3{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:960px){.layout{grid-template-columns:1fr}.sidebar{position:static;height:auto;padding:16px 19px;gap:10px}.logo{padding-bottom:9px}.logo h1{font-size:23px}.logo h1 br{display:none}.nav{display:flex;flex-wrap:wrap;margin-top:7px}.nav button{width:auto;font-size:12px;padding:7px 10px}.side-note{display:none}.main{padding:26px 19px 55px}.top{flex-wrap:wrap}}
 @media(max-width:680px){.stats,.two-col,.cards3{grid-template-columns:1fr}.task{grid-template-columns:22px 1fr;padding:13px}.task-actions{grid-column:2;justify-content:start}.formrow{grid-template-columns:1fr}.top h2{font-size:30px}.sectionhead h3{font-size:21px}}
+.count.alert{background:#6b2f33;color:#ffd6d8}
+.pill.fresh{border-color:#5e4b36;background:#2b2828;color:#fad59b}
+details.fallback{margin-top:26px}details.fallback>summary{cursor:pointer;font-size:13px;color:#c5cfdf}
