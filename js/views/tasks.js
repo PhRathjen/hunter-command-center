@@ -53,15 +53,22 @@ function taskView() {
         ? 'Erledigt & archiviert'
         : CAT[page]?.[0] || 'Aufgaben';
   let extra = '';
-  if (page === 'gear')
-    extra =
-      '<div class="notice">Persönliches Pre-Raid-Ziel erreicht. Diese Liste ist Besitz- und Alternativen-Archiv, keine BiS-Pflichtliste. Offene Alternativen sind optional.</div>';
-  if (page === 'future')
-    extra =
-      '<div class="notice">Diese Ziele bleiben bewusst außerhalb des aktuellen Fokus: Rhok’delar wird erst mit dem passenden Raid-Content konkret. Die Onyxia-Sinew ist frühestens ab Raidstart ein Thema; für Ancient Petrified Leaf ist Molten Core notwendig.</div>';
-  if (page === 'quests')
-    extra =
-      '<div class="notice">Silithus und Winterspring fast fertig; Eastern Plaguelands zuletzt zwei Elite-Quests offen. Die abgeschlossene Tirion-Questreihe bleibt separat im Archiv erfasst.</div>';
+  // Hinweise werden aus den aktuellen Aufgaben berechnet, nie als feste Fortschrittsaussage.
+  if (page === 'gear') {
+    const g = gearStats();
+    extra = `<div class="notice">Gear: ${g.done} von ${g.total} erledigt. Diese Liste ist Besitz- und Alternativen-Archiv, keine BiS-Pflichtliste. Offene Einträge mit P4 sind optional.</div>`;
+  }
+  if (page === 'future') {
+    const blocked = categoryTasks('future').filter((t) => t.status === 'blocked').length;
+    if (blocked)
+      extra = `<div class="notice">${blocked} ${blocked === 1 ? 'Ziel ist' : 'Ziele sind'} noch nicht verfügbar und ${blocked === 1 ? 'bleibt' : 'bleiben'} außerhalb des aktuellen Fokus, bis der Content bestätigt ist.</div>`;
+  }
+  if (page === 'quests') {
+    const open = categoryTasks('quests').filter(active).length;
+    const done = categoryTasks('quests').filter((t) => t.status === 'done').length;
+    const tirion = tirionStats();
+    extra = `<div class="notice">Quests: ${open} offen, ${done} erledigt.${tirion.total ? ` Die Tirion-Questreihe (${tirion.done}/${tirion.total} erledigt) wird separat erfasst.` : ''}</div>`;
+  }
   if (page === 'raid')
     extra =
       raidStartInfo() && RAIDSTART.raids.length

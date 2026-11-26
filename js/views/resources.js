@@ -2,7 +2,7 @@
 /* Seite: Ressourcen. */
 
 function resourceInputs() {
-  return `<label class="fieldlabel">Gold (g)</label><input class="in" type="number" min="0" id="goldInput" value="${data.gold ?? ''}"><p class="hint">${data.economy.goldConfirmed ? 'Aktualisiert' : '904g zuletzt nach Dawn-Armor-Materialkauf; neu eintragen.'}</p><label class="fieldlabel">Tarnished Undermine Real</label><div class="counter"><button class="btn" data-realstep="-1">−</button><input class="in" type="number" min="0" id="realInput" value="${data.reals}"><button class="btn" data-realstep="1">+</button><span class="hint">/ ${data.realsCap}</span></div><p class="hint">${data.economy.realsConfirmed ? 'Aktualisiert' : '67 zuletzt vor weiteren Runs gemeldet; aktuellen Wert prüfen.'}</p>`;
+  return `<label class="fieldlabel">Gold (g)</label><input class="in" type="number" min="0" id="goldInput" value="${data.gold ?? ''}"><p class="hint">${data.economy.goldConfirmed ? 'Aktualisiert' : (data.gold == null ? 'Noch kein Wert eingetragen.' : data.gold.toLocaleString('de-DE') + 'g ist ein älterer Stand; neu eintragen.')}</p><label class="fieldlabel">Tarnished Undermine Real</label><div class="counter"><button class="btn" data-realstep="-1">−</button><input class="in" type="number" min="0" id="realInput" value="${data.reals}"><button class="btn" data-realstep="1">+</button><span class="hint">/ ${data.realsCap}</span></div><p class="hint">${data.economy.realsConfirmed ? 'Aktualisiert' : `${data.reals} ist ein älterer Stand; aktuellen Wert prüfen.`}</p>`;
 }
 
 function resourcesView() {
