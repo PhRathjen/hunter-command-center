@@ -280,11 +280,9 @@ Never mark goals as completed without user confirmation or authorized access to 
 
 A scheduled ChatGPT Watcher researches relevant WoW Forever developments daily.
 
-Current integration: manual JSON patch import (watcher page in the app).
+Current integration: the existing ChatGPT automation has been configured to publish directly to data/news.json and data/suggestions.json. Manual JSON patch import remains a fallback.
 
-Target integration: automatic GitHub commits to the content files.
-
-**Status: the content layer is implemented, automatic watcher commits are not.** Do not claim automated GitHub synchronization is operational until it has been successfully implemented and tested.
+**Status (2026-11-26): content layer implemented; direct GitHub write access from an interactive ChatGPT session verified in commit 745c5a3; scheduled watcher configured, but its first successful automatic content commit and live deployment are not yet verified.** Do not claim end-to-end synchronization is operational until verified.
 
 ### How the frontend uses content
 
