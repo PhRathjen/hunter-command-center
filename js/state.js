@@ -227,6 +227,23 @@ function sortTasks(items) {
   );
 }
 
+// Fortschritt einer Kategorie. Optionale Aufgaben (P4) zählen nur, wenn sie erledigt sind.
+function categoryProgress(cat) {
+  const counted = categoryTasks(cat).filter((t) => t.status === 'done' || t.priority < 4);
+  const done = counted.filter((t) => t.status === 'done').length;
+  return {
+    done,
+    total: counted.length,
+    open: counted.length - done,
+    pct: counted.length ? Math.round((100 * done) / counted.length) : 0,
+  };
+}
+
+// Offene Aufgaben einer Kategorie, wichtigste zuerst.
+function openTasks(cat) {
+  return sortTasks(categoryTasks(cat).filter(active));
+}
+
 function focusTasks() {
   const marked = data.focus.map(getTask).filter((t) => t && active(t));
   const pool = sortTasks(

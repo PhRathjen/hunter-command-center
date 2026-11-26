@@ -36,21 +36,56 @@
  </form>
 </dialog>
 <div id="toast" role="status" aria-live="polite" class="toast"></div>
-<script src="js/content.js"></script>
-<script src="js/config.js"></script>
-<script src="js/utils.js"></script>
-<script src="js/state.js"></script>
-<script src="js/views/components.js"></script>
-<script src="js/views/overview.js"></script>
-<script src="js/views/tasks.js"></script>
-<script src="js/views/news.js"></script>
-<script src="js/views/daily.js"></script>
-<script src="js/views/resources.js"></script>
-<script src="js/views/layout.js"></script>
-<script src="js/editor.js"></script>
-<script src="js/backup.js"></script>
-<script src="js/events.js"></script>
-<script src="js/events-daily.js"></script>
-<script src="js/main.js"></script>
+<script>
+/* Lädt CSS und JS bei jedem Start mit Revalidierung. GitHub Pages erlaubt Browsern sonst 10 Minuten
+   Cache, sodass Änderungen erst verzögert sichtbar werden. Die Reihenfolge der Scripts ist wichtig.
+   Neue Dateien hier eintragen. Ohne fetch (z. B. offline) greift der Fallback mit normalen Script-Tags. */
+(function () {
+  var JS = [
+    'js/content.js',
+    'js/config.js',
+    'js/utils.js',
+    'js/state.js',
+    'js/views/components.js',
+    'js/views/overview.js',
+    'js/views/tasks.js',
+    'js/views/news.js',
+    'js/views/daily.js',
+    'js/views/resources.js',
+    'js/views/layout.js',
+    'js/editor.js',
+    'js/backup.js',
+    'js/events.js',
+    'js/events-daily.js',
+    'js/main.js'
+  ];
+  function get(path) {
+    return fetch(path, { cache: 'no-cache' }).then(function (res) {
+      if (!res.ok) throw new Error(path + ': HTTP ' + res.status);
+      return res.text();
+    });
+  }
+  function fallback() {
+    JS.forEach(function (path) {
+      var s = document.createElement('script');
+      s.async = false; // Ausführung in Einfügereihenfolge
+      s.src = path;
+      document.body.appendChild(s);
+    });
+  }
+  Promise.all([get('css/styles.css')].concat(JS.map(get))).then(function (texts) {
+    var style = document.createElement('style');
+    style.textContent = texts[0];
+    document.head.appendChild(style);
+    var link = document.querySelector('link[rel="stylesheet"]');
+    if (link) link.remove();
+    JS.forEach(function (path, i) {
+      var s = document.createElement('script');
+      s.textContent = texts[i + 1] + String.fromCharCode(10) + '//# sourceURL=' + path;
+      document.body.appendChild(s);
+    });
+  }, fallback);
+})();
+</script>
 </body>
 </html>

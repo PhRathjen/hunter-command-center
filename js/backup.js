@@ -103,7 +103,9 @@ function importPatch() {
 }
 
 function summary() {
-  let s = `WoW Forever Hunter Tracker V3 – Stand ${localDay()}\nGear-Ziel: 8 % Hit, Dawn Armor, T0 3er, Baron Cape.\nGold: ${data.gold ?? 'unbekannt'}${data.economy.goldConfirmed ? '' : ' (alter Stand)'}; Reals: ${data.reals}/${data.realsCap}${data.economy.realsConfirmed ? '' : ' (alter Stand)'}; Darkspear Fortschritt ab Honored: ${data.economy.rep}/33000; Runecloth: ${data.economy.cloth} ${data.economy.repConfirmed ? '' : '(alter Stand)'}.\nFokus: ${focusTasks()
+  const raidProgress = categoryProgress('raid');
+  const gearProgress = gearStats();
+  let s = `WoW Forever Hunter Tracker V3 – Stand ${localDay()}\nRaidbereitschaft: ${raidProgress.done}/${raidProgress.total} Pflichtaufgaben (${raidProgress.pct} %); Gear: ${gearProgress.done}/${gearProgress.total} erledigt.\nGold: ${data.gold ?? 'unbekannt'}${data.economy.goldConfirmed ? '' : ' (alter Stand)'}; Reals: ${data.reals}/${data.realsCap}${data.economy.realsConfirmed ? '' : ' (alter Stand)'}; Darkspear Fortschritt ab Honored: ${data.economy.rep}/33000; Runecloth: ${data.economy.cloth} ${data.economy.repConfirmed ? '' : '(alter Stand)'}.\nFokus: ${focusTasks()
     .map((t) => t.title)
     .join(
       ' | ',

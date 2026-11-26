@@ -35,6 +35,8 @@ The application uses vanilla HTML, CSS and JavaScript without a build step.
 
 JavaScript files use classic script tags and share one global scope (top-level `const`, `let` and functions are visible across files). The loading order is defined in `index.html` and must be respected: files only call functions from later files at runtime, but top-level code must only use things from earlier files.
 
+`index.html` does not use plain `<script src>` tags. A small inline loader fetches `css/styles.css` and all JS files with `cache: 'no-cache'` and injects them in order, because GitHub Pages sends `Cache-Control: max-age=600` and changes would otherwise show up with up to 10 minutes delay. **New JS files must be added to the `JS` array in that loader** (order matters). If `fetch` fails (e.g. offline), the loader falls back to ordinary `<script src>` tags, which load from the browser cache. A cached `index.html` itself may still be up to 10 minutes old on a normal navigation; a reload fetches it fresh.
+
 Because content is loaded with `fetch`, the app must be served over HTTP. Opening `index.html` via `file://` does not load content (see fallback rules in section 9).
 
 ### Repository Structure

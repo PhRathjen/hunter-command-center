@@ -22,7 +22,7 @@ js/main.js        Start
 robots.txt        Crawler aussperren
 ```
 
-Reines HTML/CSS/JS, kein Build-Schritt. Die Scripts sind klassische Script-Tags und teilen sich einen globalen Scope.
+Reines HTML/CSS/JS, kein Build-Schritt. Die Scripts sind klassische Scripts und teilen sich einen globalen Scope. Ein kleiner Loader in `index.html` lädt CSS und JS mit Revalidierung, damit Änderungen nach einem Neuladen sofort sichtbar sind (GitHub Pages erlaubt sonst 10 Minuten Cache). Neue JS-Dateien müssen in die Liste im Loader eingetragen werden, die Reihenfolge ist wichtig.
 
 ## Daten und Datenschutz
 
