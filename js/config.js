@@ -41,6 +41,9 @@ const NAV = [
   ['archive', 'Erledigt', '✓'],
 ];
 
+// Überschrift der Navigationsgruppe, die vor dem jeweiligen Eintrag steht.
+const NAV_GROUPS = { overview: 'Heute', resources: 'Planung', all: 'Aufgaben' };
+
 const MODES = {
   short: 'Kurz erledigen',
   solo: 'Solo-Farm',

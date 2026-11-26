@@ -14,7 +14,8 @@ function renderNav() {
               ).length
             : null;
     const alert = key === 'watcher' ? unseenNews().length + pendingSuggestions().length : 0;
-    return `<button data-nav="${key}" class="${page === key ? 'active' : ''}"><span class="ico">${ico}</span>${esc(label)}${n !== null ? `<span class="count">${n}</span>` : ''}${alert ? `<span class="count alert" title="Neu oder offen">${alert}</span>` : ''}</button>`;
+    const group = NAV_GROUPS[key] ? `<div class="navgroup">${esc(NAV_GROUPS[key])}</div>` : '';
+    return `${group}<button data-nav="${key}" class="${page === key ? 'active' : ''}"><span class="ico">${ico}</span>${esc(label)}${n !== null ? `<span class="count">${n}</span>` : ''}${alert ? `<span class="count alert" title="Neu oder offen">${alert}</span>` : ''}</button>`;
   }).join('');
 }
 
