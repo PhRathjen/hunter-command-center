@@ -9,7 +9,7 @@ Live: https://phrathjen.github.io/hunter-command-center/ (nicht verlinkt, per `n
 ```
 index.html        Markup und Einstiegspunkt (Script-Reihenfolge steht hier)
 css/styles.css    Dark-Mode-Design
-data/             Content-Layer (JSON): tasks.json, news.json, daily.json
+data/             Content-Layer (JSON): tasks.json, news.json, daily.json, suggestions.json
 js/content.js     Lädt data/*.json beim Start
 js/config.js      Konstanten, Kategorien, Navigation
 js/utils.js       Allgemeine Helfer
@@ -59,4 +59,6 @@ Settings → Pages → Source: *Deploy from a branch* → `main` / `(root)`.
 
 ## Roadmap
 
-Watcher-Anbindung (automatische Commits in `data/`), Vorschlagsliste für neue Aufgaben, Charakterverwaltung, Raid Planner, optional Supabase-Sync.
+Der bestehende ChatGPT-Watcher ist für automatische Commits ausschließlich in `data/news.json` und `data/suggestions.json` konfiguriert. Schreibzugriff aus dem interaktiven Chat wurde bestätigt; der erste erfolgreiche automatische Content-Commit und dessen Live-Deployment stehen als End-to-End-Test noch aus. Der manuelle JSON-Import bleibt als Fallback erhalten.
+
+Weitere Roadmap: Charakterverwaltung, Raid Planner, optional Supabase-Sync.
